@@ -1,5 +1,6 @@
 from opsdroid.skill import Skill
 from opsdroid.matchers import match_regex
+from opsdroid.events import UserInvite, JoinRoom
 
 import re
 import aiohttp
@@ -47,3 +48,10 @@ class Intersphinx(Skill):
 
         if response:
             await message.respond(response)
+
+    @match_event(UserInvite)
+    async def on_invite_to_room(self, invite):
+        """
+        Join all rooms on invite.
+        """
+        await invite.respond(JoinRoom())
