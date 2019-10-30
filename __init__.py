@@ -1,14 +1,17 @@
-from opsdroid.skill import Skill
-from opsdroid.matchers import match_regex, match_event
-from opsdroid.events import UserInvite, JoinRoom
-
+import logging
 import re
-import aiohttp
 from urllib.parse import urljoin
+
+import aiohttp
 from sphobjinv import Inventory
+
+from opsdroid.events import JoinRoom, UserInvite
+from opsdroid.matchers import match_event, match_regex
+from opsdroid.skill import Skill
 
 REGEX = "`(\S+)`"
 
+_LOGGER = logging.getLogger(__name__)
 
 class Intersphinx(Skill):
     def __init__(self, opsdroid, config):
@@ -54,4 +57,5 @@ class Intersphinx(Skill):
         """
         Join all rooms on invite.
         """
+        _LOGGER.info("Got room invite.")
         await invite.respond(JoinRoom())
