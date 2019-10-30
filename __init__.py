@@ -14,7 +14,6 @@ class Intersphinx(Skill):
         super().__init__(opsdroid, config)
         self.object_map = None
 
-
     async def setup_inventories(self):
         if self.object_map is not None:
             return
@@ -42,11 +41,9 @@ class Intersphinx(Skill):
                 url = obj
                 if url.endswith("$"):
                     url = url.replace("$", match)
-                print(url)
                 if response:
                     response += ", "
                 response += f"<a href={url}>{match}</a>"
 
         if response:
             await message.respond(response)
-
