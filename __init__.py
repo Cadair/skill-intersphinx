@@ -1,5 +1,5 @@
 from opsdroid.skill import Skill
-from opsdroid.matchers import match_regex
+from opsdroid.matchers import match_regex, match_event
 from opsdroid.events import UserInvite, JoinRoom
 
 import re
