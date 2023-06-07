@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 import aiohttp
 from sphobjinv import Inventory
 
-from opsdroid.events import JoinRoom, UserInvite
+from opsdroid.events import JoinRoom, UserInvite, Reply
 from opsdroid.matchers import match_event, match_regex
 from opsdroid.skill import Skill
 
@@ -35,7 +35,7 @@ class Intersphinx(Skill):
                 except Exception:
                     _LOGGER.exception("Failed to load %s", obj_url)
 
-    @match_regex(REGEX)
+    @match_regex(REGEX, matching_condition="search")
     async def respond_with_docs(self, message):
         await self.setup_inventories()
 
@@ -53,4 +53,4 @@ class Intersphinx(Skill):
                 response += f"<a href={url}>{match}</a>"
 
         if response:
-            await message.respond(response)
+            await message.respond(Reply(response, linked_event=message))
