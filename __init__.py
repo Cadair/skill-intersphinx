@@ -26,11 +26,14 @@ class Intersphinx(Skill):
         self.inventories = []
         async with aiohttp.ClientSession() as session:
             for iurl in self.config['inventories']:
-                obj_url = urljoin(iurl, "objects.inv")
-                async with session.get(obj_url) as resp:
-                    inv = Inventory(await resp.read())
-                    self.inventories.append(inv)
-                self.object_map.update({i.name: urljoin(iurl, i.uri) for i in inv.objects})
+                try:
+                    obj_url = urljoin(iurl, "objects.inv")
+                    async with session.get(obj_url) as resp:
+                        inv = Inventory(await resp.read())
+                        self.inventories.append(inv)
+                    self.object_map.update({i.name: urljoin(iurl, i.uri) for i in inv.objects})
+                except Exception:
+                    _LOGGER.exception("Failed to load %s", obj_url)
 
     @match_regex(REGEX)
     async def respond_with_docs(self, message):
