@@ -51,11 +51,3 @@ class Intersphinx(Skill):
 
         if response:
             await message.respond(response)
-
-    @match_event(UserInvite)
-    async def on_invite_to_room(self, invite):
-        """
-        Join all rooms on invite.
-        """
-        _LOGGER.info("Got room invite.")
-        await invite.respond(JoinRoom())
